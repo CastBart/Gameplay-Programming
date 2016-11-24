@@ -1,0 +1,9 @@
+﻿  Game.cpp
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(107): warning C4930: 'Matrix3 m1(void)': prototyped function not called (was a variable definition intended?)
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(153): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(154): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(155): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(166): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(167): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\c00205464\desktop\lab 5\sfmlopengl\game.cpp(168): warning C4244: 'argument': conversion from 'double' to 'GLfloat', possible loss of data
+  SFMLOpenGL.vcxproj -> C:\Users\C00205464\Desktop\lab 5\Debug\SFMLOpenGL.exe
