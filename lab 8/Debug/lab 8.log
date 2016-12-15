@@ -1,0 +1,6 @@
+﻿  Game.cpp
+c:\users\c00205464\desktop\lab 8\game.cpp(278): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 8\game.cpp(279): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 8\game.cpp(280): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  lab 8.vcxproj -> C:\Users\C00205464\Desktop\lab 8\Debug\lab 8.exe
+  lab 8.vcxproj -> C:\Users\C00205464\Desktop\lab 8\Debug\lab 8.pdb (Partial PDB)
