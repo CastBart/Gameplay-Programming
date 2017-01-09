@@ -1,0 +1,16 @@
+﻿  Game.cpp
+c:\users\c00205464\desktop\cube game\game.cpp(60): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\c00205464\desktop\cube game\game.cpp(64): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\c00205464\desktop\cube game\game.cpp(290): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\cube game\game.cpp(291): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\cube game\game.cpp(292): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\cube game\game.cpp(304): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\cube game\game.cpp(305): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\cube game\game.cpp(306): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Cube.cpp
+  Generating Code...
+  Compiling...
+  Main.cpp
+  Generating Code...
+  Cube Game.vcxproj -> C:\Users\C00205464\Desktop\Cube Game\Debug\Cube Game.exe
+  Cube Game.vcxproj -> C:\Users\C00205464\Desktop\Cube Game\Debug\Cube Game.pdb (Partial PDB)
