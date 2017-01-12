@@ -1,3 +1,4 @@
+#pragma once
 #include "Cube.h"
 
 
@@ -8,13 +9,17 @@ class Game
 public:
 	Game();
 	~Game();
+
+
+	
+
+
 	void run();
 private:
 	sf::Window window;
 	bool isRunning = false;
 	void initialize();
-	void transformCube(Matrix3 &);
-	void translatePoints(double translation, const Matrix3::Axis &axis);
+	
 
 	void update();
 	void render();
@@ -24,7 +29,11 @@ private:
 	sf::Clock clock;
 	sf::Time elapsed;
 
-	Cube m_cube;
 
+	GLuint vbo[1];
+
+
+	Cube m_cube = Cube(5.0f);
+	Cube m_cube2 = Cube();
 	float rotationAngle = 0.0f;
 };

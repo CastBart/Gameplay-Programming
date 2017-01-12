@@ -188,10 +188,10 @@ Vector3 Matrix3::Row(int r)
 		 row4[0] = 0; row4[1] = 0; row4[2] = 0; row4[3] = 1;
 		 break;
 	 default:
-		 row1[0] = 0; row1[1] = 0; row1[2] = 0; row1[3] = 0;
-		 row2[0] = 0; row2[1] = 0; row2[2] = 0; row2[3] = 0;
-		 row3[0] = 0; row3[1] = 0; row3[2] = 0; row3[3] = 0;
-		 row4[0] = 0; row4[1] = 0; row4[2] = 0; row4[3] = 0;
+		 row1[0] = 1; row1[1] = 0; row1[2] = 0; row1[3] = 0;
+		 row2[0] = 0; row2[1] = 1; row2[2] = 0; row2[3] = 0;
+		 row3[0] = 0; row3[1] = 0; row3[2] = 1; row3[3] = 0;
+		 row4[0] = 0; row4[1] = 0; row4[2] = 0; row4[3] = 1;
 		 break;
 	 }
 
