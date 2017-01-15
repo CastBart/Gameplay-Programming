@@ -26,6 +26,8 @@ public:
 	void initialize();
 	void transformCube(Matrix3 &);
 	void translatePoints(double translation, const Matrix3::Axis &axis);
+	void moveCentrePoint(double, const Matrix3::Axis&);
+	float inverse(float);
 
 	void update();
 
@@ -44,6 +46,8 @@ private:
 	Matrix3 matrix;
 	sf::Clock clock;
 	sf::Time elapsed;
+
+	Vector3 m_centrePoint;
 
 };
 

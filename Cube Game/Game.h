@@ -33,7 +33,14 @@ private:
 	GLuint vbo[1];
 
 
-	Cube m_cube = Cube(5.0f);
-	Cube m_cube2 = Cube();
+	
+	Cube m_cube[6] = {
+	Cube(6),
+	Cube(3),
+	Cube(),
+	Cube(-3),
+	Cube(-6)
+	
+	};
 	float rotationAngle = 0.0f;
 };

@@ -37,42 +37,82 @@ void Game::run()
 				case sf::Keyboard::Up:
 					//rotates ABOUT the x axis
 					matrix = Matrix3::Rotation(-1, Matrix3::Axis::X);
-					m_cube.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Down:
 					//rotates ABOUT the x axis
 					matrix = Matrix3::Rotation(1, Matrix3::Axis::X);
-					m_cube.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Left:
 					matrix = Matrix3::Rotation(-1, Matrix3::Axis::Y);
-					m_cube.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Right:
 					matrix = Matrix3::Rotation(1, Matrix3::Axis::Y);
-					m_cube.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Comma:
 					matrix = Matrix3::Rotation(1, Matrix3::Axis::Z);
-					m_cube.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Period:
 					matrix = Matrix3::Rotation(-1, Matrix3::Axis::Z);
-					m_cube.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Add:
 					matrix = Matrix3::Scale(1.1, 1.1, 1.1);
-					m_cube2.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::Subtract:
 					matrix = Matrix3::Scale(0.9, 0.9, 0.9);
-					m_cube2.transformCube(matrix);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].transformCube(matrix);
+					}
+					
 					break;
 				case sf::Keyboard::D:
-					m_cube.translatePoints(1, Matrix3::Axis::Z);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].translatePoints(1, Matrix3::Axis::X);
+					}
+					
 					break;
 				case sf::Keyboard::A:
-					m_cube.translatePoints(-1, Matrix3::Axis::Z);
+					for (int i = 0; i < 6; i++)
+					{
+						m_cube[i].translatePoints(-1, Matrix3::Axis::X);
+					}
+					
 					break;
 				default:
 					break;
@@ -120,40 +160,17 @@ void Game::initialize()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 
 
-	m_cube.initialize();
-	m_cube2.initialize();
+	
+	for (int i = 0; i < 6; i++)
+	{
+		m_cube[i].initialize();
+	}
+	
 }
 
 void Game::update()
 {
-	
 	glCullFace(GL_BACK);
-		
-	elapsed = clock.getElapsedTime();
-	//glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(Vertex), triangles, GL_DYNAMIC_DRAW);
-	/*if (elapsed.asSeconds() >= 1.0f)
-	{
-		clock.restart();
-
-		if (!flip)
-		{
-			flip = true;
-		}
-		else
-			flip = false;
-	}*/
-	
-	/*if (flip)
-	{
-		rotationAngle += 0.005f;
-
-		if (rotationAngle > 360.0f)
-		{
-			rotationAngle -= 360.0f;
-		}
-	}*/
-
-	
 }
 
 void Game::render()
@@ -162,7 +179,7 @@ void Game::render()
 	glEnable(GL_STENCIL_TEST);
 	cout << "Drawing" << endl;
 	
-
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glTranslated(0.0, 0.0, -15.0);
@@ -171,8 +188,11 @@ void Game::render()
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 
-	m_cube.render();
-	m_cube2.render();
+	for (int i = 0; i < 6; i++)
+	{
+		m_cube[i].render();
+	}
+	
 
 
 	window.display();

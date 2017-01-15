@@ -1,16 +1,8 @@
-﻿  Vector3.cpp
-  Matrix3.cpp
-  Main.cpp
-  Game.cpp
-c:\users\c00205464\downloads\gameplay-programming\cube game\game.cpp(64): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\c00205464\downloads\gameplay-programming\cube game\game.cpp(68): warning C4305: 'argument': truncation from 'double' to 'float'
-  Cube.cpp
-c:\users\c00205464\downloads\gameplay-programming\cube game\cube.cpp(129): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\cube game\cube.cpp(130): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\cube game\cube.cpp(131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\cube game\cube.cpp(143): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\cube game\cube.cpp(144): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\cube game\cube.cpp(145): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Game.cpp
+d:\gameplay-programming\cube game\game.cpp(88): warning C4305: 'argument': truncation from 'double' to 'float'
+d:\gameplay-programming\cube game\game.cpp(96): warning C4305: 'argument': truncation from 'double' to 'float'
   Generating Code...
-  Cube Game.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\Cube Game\Debug\Cube Game.exe
-  Cube Game.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\Cube Game\Debug\Cube Game.pdb (Partial PDB)
+  Skipping... (no relevant changes detected)
+  Main.cpp
+  Cube Game.vcxproj -> D:\Gameplay-Programming\Cube Game\Debug\Cube Game.exe
+  Cube Game.vcxproj -> D:\Gameplay-Programming\Cube Game\Debug\Cube Game.pdb (Partial PDB)

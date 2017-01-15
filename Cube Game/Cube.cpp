@@ -2,13 +2,9 @@
 #include "Cube.h"
 
 
-
-
-
-
-
 Cube::Cube(float offset):
-	m_offset(offset)
+	m_offset(offset),
+	m_centrePoint(offset,0,0)
 {
 }
 
@@ -31,12 +27,12 @@ void Cube::initialize()
 	vertex[2].coordinate[1] = 1.0f;
 	vertex[2].coordinate[2] = 1.0f;
 
-	vertex[3].coordinate[0] = 1.0f + m_offset;		//bottom right f 3
+	vertex[3].coordinate[0] = 1.0f + m_offset;		//bottom right f 3    
 	vertex[3].coordinate[1] = -1.0f;
 	vertex[3].coordinate[2] = 1.0f;
 
 
-	vertex[4].coordinate[0] = -1.0f + m_offset;	//bottom left b 4
+	vertex[4].coordinate[0] = -1.0f + m_offset;	//bottom left b 4      
 	vertex[4].coordinate[1] = -1.0f;
 	vertex[4].coordinate[2] = -1.0f;
 
@@ -87,23 +83,23 @@ void Cube::initialize()
 
 
 
-	triangles[30] = 0;   triangles[31] = 1;   triangles[32] = 2;//012
-	triangles[33] = 2;   triangles[34] = 3;   triangles[35] = 0;//230
+	triangles[30] = 1;   triangles[31] = 0;   triangles[32] = 3;  // front
+	triangles[33] = 2;   triangles[34] = 1;   triangles[35] = 3;
 
-	triangles[6] = 0;   triangles[7] = 1;   triangles[8] = 5;
+	triangles[6] = 0;   triangles[7] = 1;   triangles[8] = 5;     //left side
 	triangles[9] = 5;   triangles[10] = 4;   triangles[11] = 0;
 
-	triangles[12] = 3;   triangles[13] = 2;   triangles[14] = 6;
-	triangles[15] = 6;   triangles[16] = 7;   triangles[17] = 3;
+	triangles[12] = 2;   triangles[13] = 3;   triangles[14] = 7; // right side
+	triangles[15] = 6;   triangles[16] = 2;   triangles[17] = 7;
 
-	triangles[18] = 5;   triangles[19] = 1;   triangles[20] = 2;
-	triangles[21] = 2;   triangles[22] = 6;   triangles[23] = 5;
+	triangles[18] = 5;   triangles[19] = 1;   triangles[20] = 2; // top face
+	triangles[21] = 6;   triangles[22] = 5;   triangles[23] = 2;
 
-	triangles[24] = 3;   triangles[25] = 0;   triangles[26] = 4;
-	triangles[27] = 3;   triangles[28] = 7;   triangles[29] = 4;
+	triangles[24] = 0;   triangles[25] = 4;   triangles[26] = 7;
+	triangles[27] = 3;   triangles[28] = 0;   triangles[29] = 7;
 
-	triangles[0] = 7;   triangles[1] = 6;   triangles[2] = 5; //back face
-	triangles[3] = 5;   triangles[4] = 4;   triangles[5] = 7;
+	triangles[0] = 4;   triangles[1] = 5;   triangles[2] = 6; //back face
+	triangles[3] = 7;   triangles[4] = 4;   triangles[5] = 6;
 
 	
 	
@@ -123,9 +119,17 @@ void Cube::transformCube(Matrix3 &matrix)
 {
 	for (int i = 0; i < 8; i++)
 	{
-		m_cubePoints[i] = Vector3(vertex[i].coordinate[0], vertex[i].coordinate[1], vertex[i].coordinate[2]);
+
+		m_cubePoints[i] = Vector3(vertex[i].coordinate[0] , vertex[i].coordinate[1], vertex[i].coordinate[2]);
+		m_cubePoints[i] = Vector3( (m_cubePoints[i].M_X() + inverse(m_centrePoint.M_X())) , (m_cubePoints[i].M_Y() + inverse(m_centrePoint.M_Y())),(m_cubePoints[i].M_Z() + inverse(m_centrePoint.M_Z())));
+		
+		
+
 		m_cubePoints[i] = matrix * m_cubePoints[i];
 
+		m_cubePoints[i] = Vector3(m_cubePoints[i].M_X() + m_centrePoint.M_X(), m_cubePoints[i].M_Y() + m_centrePoint.M_Y(), m_cubePoints[i].M_Z() + m_centrePoint.M_Z());
+
+		//m_cubePoints[i] = Vector3(m_cubePoints[i].M_X() + m_centrePoint.M_X(), m_cubePoints[i].M_Y() + m_centrePoint.M_Y(), m_cubePoints[i].M_Z() + m_centrePoint.M_Z());
 		vertex[i].coordinate[0] = m_cubePoints[i].M_X();
 		vertex[i].coordinate[1] = m_cubePoints[i].M_Y();
 		vertex[i].coordinate[2] = m_cubePoints[i].M_Z();
@@ -134,16 +138,51 @@ void Cube::transformCube(Matrix3 &matrix)
 
 void Cube::translatePoints(double translation, const Matrix3::Axis & axis)
 {
-
+	moveCentrePoint(translation, axis);
 	for (int i = 0; i < 8; i++)
 	{
 		m_cubePoints[i] = Vector3(vertex[i].coordinate[0], vertex[i].coordinate[1], vertex[i].coordinate[2]);
 		m_cubePoints[i] = Matrix3::translate(m_cubePoints[i], translation, axis);
-
 		vertex[i].coordinate[0] = m_cubePoints[i].M_X();
 		vertex[i].coordinate[1] = m_cubePoints[i].M_Y();
 		vertex[i].coordinate[2] = m_cubePoints[i].M_Z();
 	}
+}
+
+void Cube::moveCentrePoint(double translation, const Matrix3::Axis& axis)
+{
+
+	switch (axis)
+	{
+	case Matrix3::Axis::X:
+		m_centrePoint = Vector3(m_centrePoint.M_X() + translation, m_centrePoint.M_Y(), m_centrePoint.M_Z());
+		break;
+	case Matrix3::Axis::Y:
+		m_centrePoint = Vector3(m_centrePoint.M_X(), m_centrePoint.M_Y() + translation, m_centrePoint.M_Z());
+
+		break;
+	case Matrix3::Axis::Z:
+		m_centrePoint = Vector3(m_centrePoint.M_X(), m_centrePoint.M_Y(), m_centrePoint.M_Z() + translation);
+
+		break;
+	default:
+		m_centrePoint = Vector3(m_centrePoint.M_X(), m_centrePoint.M_Y(), m_centrePoint.M_Z());
+		break;
+	}
+
+}
+
+float Cube::inverse(float number)
+{
+	if (number < 0)
+	{
+		number = -number;
+	}
+	else if( number > 0)
+	{
+		number =  -number;
+	}
+	return number;
 }
 
 void Cube::update()
