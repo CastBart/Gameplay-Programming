@@ -29,10 +29,14 @@ public:
 	void moveCentrePoint(double, const Matrix3::Axis&);
 	float inverse(float);
 
-	void update();
+	void update(double dt);
 
 private:
 	
+	void moveCubeToCentre()
+	{
+
+	}
 
 	Vertex vertex[8];
 	GLubyte triangles[36];

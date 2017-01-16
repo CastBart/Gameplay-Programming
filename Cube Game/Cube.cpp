@@ -4,7 +4,8 @@
 
 Cube::Cube(float offset):
 	m_offset(offset),
-	m_centrePoint(offset,0,0)
+	m_centrePoint(offset,0,0),
+	matrix(Matrix3::Scale(0.99f, 0.99f, 0.99f))
 {
 }
 
@@ -124,12 +125,10 @@ void Cube::transformCube(Matrix3 &matrix)
 		m_cubePoints[i] = Vector3( (m_cubePoints[i].M_X() + inverse(m_centrePoint.M_X())) , (m_cubePoints[i].M_Y() + inverse(m_centrePoint.M_Y())),(m_cubePoints[i].M_Z() + inverse(m_centrePoint.M_Z())));
 		
 		
-
 		m_cubePoints[i] = matrix * m_cubePoints[i];
 
 		m_cubePoints[i] = Vector3(m_cubePoints[i].M_X() + m_centrePoint.M_X(), m_cubePoints[i].M_Y() + m_centrePoint.M_Y(), m_cubePoints[i].M_Z() + m_centrePoint.M_Z());
 
-		//m_cubePoints[i] = Vector3(m_cubePoints[i].M_X() + m_centrePoint.M_X(), m_cubePoints[i].M_Y() + m_centrePoint.M_Y(), m_cubePoints[i].M_Z() + m_centrePoint.M_Z());
 		vertex[i].coordinate[0] = m_cubePoints[i].M_X();
 		vertex[i].coordinate[1] = m_cubePoints[i].M_Y();
 		vertex[i].coordinate[2] = m_cubePoints[i].M_Z();
@@ -185,8 +184,11 @@ float Cube::inverse(float number)
 	return number;
 }
 
-void Cube::update()
+void Cube::update(double dt)
 {
+	translatePoints(0.1f, Matrix3::Axis::Z);
+	transformCube(matrix);
+
 }
 
 void Cube::render()

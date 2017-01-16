@@ -2,9 +2,9 @@
 #include "Game.h"
 
 static bool flip;
- 
+static double const MS_PER_UPDATE = 10.0;
 
-Game::Game() : window(sf::VideoMode(800, 600), "OpenGL Cube VBO")
+Game::Game(sf::ContextSettings settings) : window(sf::VideoMode(800, 600), "OpenGL Cube VBO", sf::Style::Default, settings)
 {
 	
 }
@@ -14,12 +14,15 @@ Game::~Game() {}
 
 void Game::run()
 {
+	sf::Clock clock;
+	sf::Int32 lag = 0;
 
 	initialize();
 
 	sf::Event event;
 
-	while (isRunning) {
+	while (isRunning) 
+	{
 
 		cout << "Game running..." << endl;
 
@@ -29,6 +32,9 @@ void Game::run()
 			{
 				isRunning = false;
 			}
+
+//Key States
+#pragma region
 			switch (event.type)
 			{
 			case sf::Event::KeyPressed:
@@ -103,14 +109,14 @@ void Game::run()
 				case sf::Keyboard::D:
 					for (int i = 0; i < 6; i++)
 					{
-						m_cube[i].translatePoints(1, Matrix3::Axis::X);
+						m_cube[i].translatePoints(1, Matrix3::Axis::Z);
 					}
 					
 					break;
 				case sf::Keyboard::A:
 					for (int i = 0; i < 6; i++)
 					{
-						m_cube[i].translatePoints(-1, Matrix3::Axis::X);
+						m_cube[i].translatePoints(-1, Matrix3::Axis::Z);
 					}
 					
 					break;
@@ -121,8 +127,17 @@ void Game::run()
 			default:
 				break;
 			}
+#pragma endregion
 		}
-		update();
+		sf::Time dt = clock.restart();
+
+		lag += dt.asMilliseconds();
+
+		while (lag > MS_PER_UPDATE)
+		{
+			update(MS_PER_UPDATE);
+			lag -= MS_PER_UPDATE;
+		}
 		render();
 	}
 
@@ -134,13 +149,10 @@ void Game::run()
 
 void Game::initialize()
 {
-
-	//glEnable(GL_CULL_VERTEX_EXT);
-	/*glEnable(GL_CULL_VERTEX_OBJECT_POSITION_EXT);*/
-
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 
-	//glEnable(GL_DEPTH_TEST);
+
 
 	isRunning = true;
 	glewInit();
@@ -148,29 +160,28 @@ void Game::initialize()
 	glLoadIdentity();
 	gluPerspective(45.0, window.getSize().x / window.getSize().y, 1.0, 500.0);
 	glMatrixMode(GL_MODELVIEW);
-	/* Vertices counter-clockwise winding */
-
-
 
 	/* Create a new VBO using VBO id */
 	glGenBuffers(1, vbo);
 	
-
 	/* Bind the VBO */
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
-
-
 	
 	for (int i = 0; i < 6; i++)
 	{
 		m_cube[i].initialize();
 	}
 	
+	
 }
 
-void Game::update()
+void Game::update(double dt)
 {
 	glCullFace(GL_BACK);
+	for (int i = 0; i < 6; i++)
+	{
+		m_cube[i].update(dt);
+	}
 }
 
 void Game::render()
@@ -182,7 +193,7 @@ void Game::render()
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glTranslated(0.0, 0.0, -15.0);
+	glTranslated(0.0, 0.0, -30.0);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 
@@ -192,6 +203,7 @@ void Game::render()
 	{
 		m_cube[i].render();
 	}
+	
 	
 
 
