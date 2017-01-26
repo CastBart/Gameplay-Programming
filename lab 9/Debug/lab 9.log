@@ -1,12 +1,2 @@
-﻿  Game.cpp
-d:\github\gameplay-programming\lab 9\game.cpp(80): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\github\gameplay-programming\lab 9\game.cpp(87): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\github\gameplay-programming\lab 9\game.cpp(427): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-d:\github\gameplay-programming\lab 9\game.cpp(434): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\github\gameplay-programming\lab 9\game.cpp(435): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\github\gameplay-programming\lab 9\game.cpp(436): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\github\gameplay-programming\lab 9\game.cpp(447): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\github\gameplay-programming\lab 9\game.cpp(448): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-d:\github\gameplay-programming\lab 9\game.cpp(449): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  lab 9.vcxproj -> D:\GitHub\Gameplay-Programming\lab 9\Debug\lab 9.exe
-  lab 9.vcxproj -> D:\GitHub\Gameplay-Programming\lab 9\Debug\lab 9.pdb (Partial PDB)
+﻿  lab 9.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\lab 9\Debug\lab 9.exe
+  lab 9.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\lab 9\Debug\lab 9.pdb (Partial PDB)

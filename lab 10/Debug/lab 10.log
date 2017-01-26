@@ -1,0 +1,25 @@
+﻿  Vector3.cpp
+  Matrix3.cpp
+  Main.cpp
+  Game.cpp
+c:\users\c00205464\desktop\lab 10\game.cpp(80): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\c00205464\desktop\lab 10\game.cpp(87): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\c00205464\desktop\lab 10\game.cpp(503): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 10\game.cpp(510): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 10\game.cpp(511): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 10\game.cpp(512): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 10\game.cpp(523): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 10\game.cpp(524): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\desktop\lab 10\game.cpp(525): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  stb_image.c
+c:\users\c00205464\desktop\lab 10\stb_image.c(300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\c00205464\desktop\lab 10\stb_image.c(362): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\c00205464\desktop\lab 10\stb_image.c(400): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\c00205464\desktop\lab 10\stb_image.c(4293): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+  lab 10.vcxproj -> C:\Users\C00205464\Desktop\lab 10\Debug\lab 10.exe
+  lab 10.vcxproj -> C:\Users\C00205464\Desktop\lab 10\Debug\lab 10.pdb (Partial PDB)

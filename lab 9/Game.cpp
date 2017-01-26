@@ -92,13 +92,13 @@ void Game::run()
 					break;
 				case sf::Keyboard::D:
 					
-						translatePoints(1, Matrix3::Axis::Z);
+						translatePoints(0.1, Matrix3::Axis::X);
 					
 
 					break;
 				case sf::Keyboard::A:
 					
-						translatePoints(-1, Matrix3::Axis::Z);
+						translatePoints(-0.1, Matrix3::Axis::X);
 					
 
 					break;
@@ -171,6 +171,7 @@ void Game::initialize()
 	glLoadIdentity();
 	gluPerspective(45.0, window.getSize().x / window.getSize().y, 1.0, 500.0);
 	glMatrixMode(GL_MODELVIEW);
+	glTranslatef(0.0f, 0.0f, -10.0f);
 
 	/* Vertices counter-clockwise winding */
 	vertex[0].coordinate[0] = -1.0f;	//bottom left f 0
@@ -273,7 +274,7 @@ void Game::initialize()
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 
 	/* Upload vertex data to GPU */
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 8, vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 7, vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, &index);
@@ -452,7 +453,6 @@ void Game::translatePoints(double translation, const Matrix3::Axis & axis)
 
 void Game::moveCentrePoint(double translation, const Matrix3::Axis& axis)
 {
-
 	switch (axis)
 	{
 	case Matrix3::Axis::X:
