@@ -1,3 +1,18 @@
-﻿  Game.cpp
-  IsJusGame.vcxproj -> C:\Users\Bartosz\Desktop\Catch up projects\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
-  IsJusGame.vcxproj -> C:\Users\Bartosz\Desktop\Catch up projects\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)
+﻿  Vector3.cpp
+  ProgramIds.cpp
+  Matrix3.cpp
+  Main.cpp
+  Game.cpp
+  Cube.cpp
+  Generating Code...
+  stb_image.c
+d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(362): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(400): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(4293): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+  IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
+  IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)

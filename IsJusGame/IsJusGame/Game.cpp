@@ -2,7 +2,6 @@
 
 
 
-
 //const string filename = "coordinates.tga";
 //const string filename = "cube.tga";
 //const string filename = "grid.tga";
@@ -103,35 +102,19 @@ void Game::initialize()
 	GLint isCompiled = 0;
 	GLint isLinked = 0;
 
-	glewInit();
-
-	//Copy UV's to all faces
-	for (int i = 1; i < 6; i++)
-		memcpy(&m_cube.uvs[i * 4 * 2], &m_cube.uvs[0], 2 * 4 * sizeof(GLfloat));
 
 	DEBUG_MSG(glGetString(GL_VENDOR));
 	DEBUG_MSG(glGetString(GL_RENDERER));
 	DEBUG_MSG(glGetString(GL_VERSION));
-	
-	//glGenVertexArrays(1, &m_ids.vao); //Gen Vertex Array
-	//glBindVertexArray(m_ids.vao);
-
-	glGenBuffers(1, &m_ids.vbo); //Gen Vertex Buffer
-	glBindBuffer(GL_ARRAY_BUFFER, m_ids.vbo);
-
-	
-	////Vertices 3 x,y,z , Colors 4 RGBA, UV/ST 2
-	//glBufferData(GL_ARRAY_BUFFER, ((3 * m_cube.VERTICES) + (4 * m_cube.COLORS) + (2 * m_cube.UVS)) * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 
-	//glGenBuffers(1, &m_ids.vib); //Gen Vertex Index Buffer
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ids.vib);
+	glewInit();
 
-	////Indices to be drawn
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * m_cube.INDICES * sizeof(GLuint), m_cube.indices, GL_STATIC_DRAW);
+	//Copy UV's to all faces
 
-	const char* vs_src = 
+	/* Vertex Shader */
+#pragma region 
+	const char* vs_src =
 		"#version 400\n\r"
 		""
 		//"layout(location = 0) in vec3 sv_position; //Use for individual Buffers"
@@ -172,6 +155,9 @@ void Game::initialize()
 		DEBUG_MSG("ERROR: Vertex Shader Compilation Error");
 	}
 
+#pragma endregion 
+	/* Fragment Shader*/
+#pragma region
 	const char* fs_src =
 		"#version 400\n\r"
 		""
@@ -185,12 +171,12 @@ void Game::initialize()
 		"void main() {"
 		//"	vec4 lightColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); "
 		//"	fColor = vec4(0.50f, 0.50f, 0.50f, 1.0f);"
-		//"	fColor = texture2D(f_texture, uv);"
+		"	fColor = texture2D(f_texture, uv);"
 		//"	fColor = color * texture2D(f_texture, uv);"
 		//"	fColor = lightColor * texture2D(f_texture, uv);"
 		//"	fColor = color + texture2D(f_texture, uv);"
 		//"	fColor = color - texture2D(f_texture, uv);"
-		"	fColor = color;"
+		//"	fColor = color;"
 		"}"; //Fragment Shader Src
 
 	DEBUG_MSG("Setting Up Fragment Shader");
@@ -212,6 +198,8 @@ void Game::initialize()
 	}
 
 	DEBUG_MSG("Setting Up and Linking Shader");
+
+
 	m_ids.progID = glCreateProgram();
 	glAttachShader(m_ids.progID, m_ids.vsid);
 	glAttachShader(m_ids.progID, m_ids.fsid);
@@ -227,6 +215,25 @@ void Game::initialize()
 	{
 		DEBUG_MSG("ERROR: Shader Link Error");
 	}
+
+#pragma endregion
+
+	
+	//glGenVertexArrays(1, &m_ids.vao); //Gen Vertex Array
+	//glBindVertexArray(m_ids.vao);
+
+	glGenBuffers(1, &m_ids.vbo); //Gen Vertex Buffer
+	glBindBuffer(GL_ARRAY_BUFFER, m_ids.vbo);
+
+	//Vertices 3 x,y,z , Colors 4 RGBA, UV/ST 2
+	glBufferData(GL_ARRAY_BUFFER, ((3 * VERTICES) + (4 *COLORS) + (2 * UVS)) * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_ids.vib); //Gen Vertex Index Buffer
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ids.vib);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * INDICES * sizeof(GLuint), Cube::indices, GL_STATIC_DRAW);
+	
+	
+	m_cube.initialize(m_ids);
 
 	//Use Progam on GPU
 	glUseProgram(m_ids.progID);
@@ -265,7 +272,7 @@ void Game::initialize()
 		GL_UNSIGNED_BYTE,	//Specifies Data type of image data
 		img_data				//Image Data
 		);
-	m_cube.initialize(m_ids);
+	
 
 
 	// Find variables in the shader
@@ -321,41 +328,8 @@ void Game::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//VBO Data....vertices, colors and UV's appended
-	/*glBufferSubData(GL_ARRAY_BUFFER, 0 * VERTICES * sizeof(GLfloat), 3 * VERTICES * sizeof(GLfloat), vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, 3 * VERTICES * sizeof(GLfloat), 4 * COLORS * sizeof(GLfloat), colors);
-	glBufferSubData(GL_ARRAY_BUFFER, ((3 * VERTICES) + (4 * COLORS)) * sizeof(GLfloat), 2 * UVS * sizeof(GLfloat), uvs);
-*/
-	// Send transformation to shader mvp uniform
-	glUniformMatrix4fv(m_ids.mvpID, 1, GL_FALSE, &mvp[0][0]);
-
-	////Set Active Texture .... 32
-	//glActiveTexture(GL_TEXTURE0);
-	//glUniform1i(m_ids.textureID, 0);
-
-	////Set pointers for each parameter (with appropriate starting positions)
-	////https://www.khronos.org/opengles/sdk/docs/man/xhtml/glVertexAttribPointer.xml
-	//glVertexAttribPointer(m_ids.positionID, 3, GL_FLOAT, GL_FALSE, 0, 0);
-	//glVertexAttribPointer(m_ids.colorID, 4, GL_FLOAT, GL_FALSE, 0, (VOID*)(3 * m_cube.VERTICES * sizeof(GLfloat)));
-	//glVertexAttribPointer(m_ids.uvID, 2, GL_FLOAT, GL_FALSE, 0, (VOID*)(((3 * m_cube.VERTICES) + (4 * m_cube.COLORS)) * sizeof(GLfloat)));
-	//
-	////Enable Arrays
-	//glEnableVertexAttribArray(m_ids.positionID);
-	//glEnableVertexAttribArray(m_ids.colorID);
-	//glEnableVertexAttribArray(m_ids.uvID);
-
-	////Draw Element Arrays
-	//glDrawElements(GL_TRIANGLES, 3 * m_cube.INDICES, GL_UNSIGNED_INT, NULL);
-
-
 	m_cube.render(m_ids, mvp);
 	window.display();
-
-	//Disable Arrays
-	glDisableVertexAttribArray(m_ids.positionID);
-	glDisableVertexAttribArray(m_ids.colorID);
-	glDisableVertexAttribArray(m_ids.uvID);
-	
 }
 
 void Game::unload()

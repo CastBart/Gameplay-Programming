@@ -39,11 +39,17 @@
 	(-1.0f, -1.0f, 1.0f)         (1.0f, -1.0f, 1.0f)
 */
 
-typedef struct
-{
-	float coordinate[3];
-	float color[3];
-} Vertex;
+//typedef struct
+//{
+//	float coordinate[3];
+//	float color[4];
+//	//float uvs[2];
+//
+//} Vertex;
+const int VERTICES = 24;	// Total Number of Vertices
+const int INDICES = 12;	// Total Number of Indexes
+const int UVS = 48;	// Total Number of UVs
+const int COLORS = 24;	// Total Number of Colors
 
 
 class Cube
@@ -53,28 +59,13 @@ public:
 
 	~Cube();
 	void render(ProgramIds& ids, glm::mat4& mpv);
-	void unload();
+	//void unload();
 	void initialize(ProgramIds & ids);
 
-	void transformCube(Matrix3 &);
-	void translatePoints(double translation, const Matrix3::Axis &axis);
-	void moveCentrePoint(double, const Matrix3::Axis&);
-	float inverse(float);
-
-	void update(double dt);
-
-	GLuint index;
-
-	Vertex vertex[8];
-	GLubyte triangles[36];
-
-	GLfloat uvs[2 * 4 * 6] = {
-		// Front Face (other faces populated in initialisation)
-		0.0, 0.0,
-		1.0, 0.0,
-		1.0, 1.0,
-		0.0, 1.0
-	};
+	static const GLuint indices[];
+	static const GLfloat vertices[];
+	static const GLfloat colors[];
+	
 
 	Vector3 m_cubePoints[8];
 
@@ -84,12 +75,7 @@ public:
 	sf::Time elapsed;
 
 	Vector3 m_centrePoint;
-
-	const int VERTICES = 24;	// Total Number of Vertices
-	const int INDICES = 12;	// Total Number of Indexes
-	const int UVS = 48;	// Total Number of UVs
-	const int COLORS = 24;	// Total Number of Colors
-
+	
 };
 
 
