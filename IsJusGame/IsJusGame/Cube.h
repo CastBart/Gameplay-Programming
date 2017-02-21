@@ -9,6 +9,7 @@
 #include "Vector3.h"
 #include "Matrix3.h"
 #include <memory>
+#include <time.h>
 
 
 #include <glm/glm.hpp>
@@ -55,19 +56,21 @@ const int COLORS = 24;	// Total Number of Colors
 class Cube
 {
 public:
-	Cube(float offset = 0);
+	Cube();
+	Cube(bool player);
 
 	~Cube();
 	void render(ProgramIds& ids, glm::mat4& mpv);
 	//void unload();
-	void initialize(ProgramIds & ids);
+	void initialize();
+	void update();
 
 	static const GLuint indices[];
-	static const GLfloat vertices[];
+	static GLfloat vertices[];
 	static const GLfloat colors[];
 	
 
-	Vector3 m_cubePoints[8];
+	Vector3 m_cubePoints[24];
 
 	float m_offset;
 	Matrix3 matrix;
@@ -75,6 +78,9 @@ public:
 	sf::Time elapsed;
 
 	Vector3 m_centrePoint;
+
+	glm::mat4 view, model, projection, mvp;
+	bool m_isPlayer;
 	
 };
 

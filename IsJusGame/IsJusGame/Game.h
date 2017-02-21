@@ -38,7 +38,10 @@ public:
 	void render();
 	void unload();
 private:
-	Cube m_cube;
+	
+
+	Cube m_player = Cube(true);
+	std::vector<Cube> m_cubes;
 	ProgramIds m_ids;
 };
 

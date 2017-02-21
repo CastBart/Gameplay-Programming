@@ -18,7 +18,7 @@ int comp_count;		// Component of texture
 
 unsigned char* img_data;		// image data
 
-glm::mat4 mvp, projection, view, model;			// Model View Projection
+	// Model View Projection
 
 Game::Game() : 
 	window(sf::VideoMode(800, 600), 
@@ -43,9 +43,12 @@ Game::~Game()
 
 void Game::run()
 {
-
+	m_cubes.push_back(Cube(false));
 	initialize();
+	
+	
 
+	
 	sf::Event event;
 
 	while (isRunning){
@@ -61,28 +64,38 @@ void Game::run()
 				isRunning = false;
 			}
 
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
 				// Set Model Rotation
-				model = rotate(model, 0.01f, glm::vec3(0, 1, 0)); // Rotate
+				//model = rotate(model, 0.01f, glm::vec3(0, 1, 0)); // Rotate
+				 
+				 m_player.view = glm::translate(m_player.view, glm::vec3(0.3, 0, 0));
+				 m_player.model = glm::translate(m_player.model, glm::vec3(-0.3, 0, 0));
+				
+			//	m_cube.translatePoints(-10, Matrix3::Axis::X);
+				
 			}
 
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
 				// Set Model Rotation
-				model = rotate(model, -0.01f, glm::vec3(0, 1, 0)); // Rotate
+				//model = rotate(model, -0.01f, glm::vec3(0, 1, 0)); // Rotate
+				 m_player.view = glm::translate(m_player.view, glm::vec3(-0.3, 0, 0));
+				 m_player.model = glm::translate(m_player.model, glm::vec3(0.3, 0, 0));
 			}
 
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
 				// Set Model Rotation
-				model = rotate(model, -0.01f, glm::vec3(1, 0, 0)); // Rotate
+				//model = rotate(model, -0.01f, glm::vec3(1, 0, 0)); // Rotate
+				 m_player.model = glm::translate(m_player.model, glm::vec3(0, 0.3, 0));
 			}
 
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
 				// Set Model Rotation
-				model = rotate(model, 0.01f, glm::vec3(1, 0, 0)); // Rotate
+				//model = rotate(model, 0.01f, glm::vec3(1, 0, 0)); // Rotate
+				 m_player.model = glm::translate(m_player.model, glm::vec3(0, -0.3, 0));
 			}
 		}
 		update();
@@ -233,7 +246,6 @@ void Game::initialize()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * INDICES * sizeof(GLuint), Cube::indices, GL_STATIC_DRAW);
 	
 	
-	m_cube.initialize(m_ids);
 
 	//Use Progam on GPU
 	glUseProgram(m_ids.progID);
@@ -284,24 +296,16 @@ void Game::initialize()
 	m_ids.mvpID = glGetUniformLocation(m_ids.progID, "sv_mvp");
 
 	// Projection Matrix 
-	projection = glm::perspective(
-		45.0f,					// Field of View 45 degrees
-		4.0f / 3.0f,			// Aspect ratio
-		5.0f,					// Display Range Min : 0.1f unit
-		100.0f					// Display Range Max : 100.0f unit
-		);
+	
 
-	// Camera Matrix
-	view = glm::lookAt(
-		glm::vec3(0.0f, 4.0f, 10.0f),	// Camera (x,y,z), in World Space
-		glm::vec3(0.0f, 0.0f, 0.0f),	// Camera looking at origin
-		glm::vec3(0.0f, 1.0f, 0.0f)	// 0.0f, 1.0f, 0.0f Look Down and 0.0f, -1.0f, 0.0f Look Up
-		);
+	
 
-	// Model matrix
-	model = glm::mat4(
-		1.0f					// Identity Matrix
-		);
+	m_player.initialize();
+
+	for (int i = 0; i < m_cubes.size(); i++)
+	{
+		m_cubes[i].initialize();
+	}
 
 	
 	// Enable Depth Test
@@ -312,11 +316,18 @@ void Game::initialize()
 
 void Game::update()
 {
+
+
 #if (DEBUG >= 2)
 	DEBUG_MSG("Updating...");
 #endif
 	// Update Model View Projection
-	mvp = projection * view * model;
+
+	m_player.update();
+	for (int i = 0; i < m_cubes.size(); i++)
+	{
+		m_cubes[0].update();
+	}
 }
 
 void Game::render()
@@ -328,7 +339,12 @@ void Game::render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_cube.render(m_ids, mvp);
+	m_player.render(m_ids, m_player.mvp);
+	for (int i = 0; i < m_cubes.size(); i++)
+	{
+		m_cubes[i].render(m_ids, m_cubes[i].mvp);
+	}
+
 	window.display();
 }
 

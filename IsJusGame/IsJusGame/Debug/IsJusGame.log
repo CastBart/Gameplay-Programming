@@ -1,18 +1,13 @@
-﻿  Vector3.cpp
-  ProgramIds.cpp
-  Matrix3.cpp
-  Main.cpp
-  Game.cpp
+﻿  Game.cpp
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(305): warning C4018: '<': signed/unsigned mismatch
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(327): warning C4018: '<': signed/unsigned mismatch
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(343): warning C4018: '<': signed/unsigned mismatch
   Cube.cpp
+d:\github\gameplay-programming\isjusgame\isjusgame\cube.cpp(158): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+d:\github\gameplay-programming\isjusgame\isjusgame\cube.cpp(231): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Generating Code...
-  stb_image.c
-d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(362): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(400): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-d:\github\gameplay-programming\isjusgame\isjusgame\stb_image.c(4293): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+  Compiling...
+  Main.cpp
+  Generating Code...
   IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
   IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)
