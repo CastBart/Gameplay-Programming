@@ -56,14 +56,15 @@ const int COLORS = 24;	// Total Number of Colors
 class Cube
 {
 public:
-	Cube();
-	Cube(bool player);
+	Cube(const glm::mat4&);
+	Cube(const glm::mat4&, bool player, int offsetX = 0);
 
 	~Cube();
 	void render(ProgramIds& ids, glm::mat4& mpv);
 	//void unload();
 	void initialize();
-	void update();
+	void update(double dt);
+	void setRandomPos();
 
 	static const GLuint indices[];
 	static GLfloat vertices[];
@@ -72,25 +73,17 @@ public:
 
 	Vector3 m_cubePoints[24];
 
-	float m_offset;
+	
 	Matrix3 matrix;
 	sf::Clock clock;
 	sf::Time elapsed;
 
 	Vector3 m_centrePoint;
-
-	glm::mat4 view, model, projection, mvp;
+	const glm::mat4& view;
+	glm::mat4 model, projection, mvp;
 	bool m_isPlayer;
+	int m_offsetZ;
 	
 };
-
-
-	
-
-	
-
-	
-	
-
 #endif
 

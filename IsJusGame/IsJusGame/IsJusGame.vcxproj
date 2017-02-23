@@ -69,11 +69,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(GLM_SDK);$(ProjectDir);$(GLEW_SDK)/include;$(GLM_SDK);$(SFML_SDK)/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(GLEW_SDK)/include;$(GLM_SDK);$(ProjectDir);$(GLEW_SDK)/include;$(GLM_SDK);$(SFML_SDK)/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(GLEW_SDK)\lib\Release\Win32;$(SFML_SDK)/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(GLM_SDK);$(ProjectDir);$(GLM_SDK);$(GLEW_SDK)/include;$(SFML_SDK)/include;$(IncludePath)</IncludePath>
+    <IncludePath>$(GLEW_SDK)/include;$(GLM_SDK);$(ProjectDir);$(GLM_SDK);$(GLEW_SDK)/include;$(SFML_SDK)/include;$(IncludePath)</IncludePath>
     <LibraryPath>$(GLEW_SDK)\lib\Release\Win32;$(SFML_SDK)/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

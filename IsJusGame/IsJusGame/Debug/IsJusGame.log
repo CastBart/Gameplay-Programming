@@ -1,13 +1,7 @@
 ﻿  Game.cpp
-d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(305): warning C4018: '<': signed/unsigned mismatch
-d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(327): warning C4018: '<': signed/unsigned mismatch
-d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(343): warning C4018: '<': signed/unsigned mismatch
-  Cube.cpp
-d:\github\gameplay-programming\isjusgame\isjusgame\cube.cpp(158): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-d:\github\gameplay-programming\isjusgame\isjusgame\cube.cpp(231): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
-  Compiling...
-  Main.cpp
-  Generating Code...
-  IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
-  IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)
+c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(77): warning C4244: '-=': conversion from 'const double' to 'sf::Int32', possible loss of data
+c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(304): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(316): warning C4018: '<': signed/unsigned mismatch
+c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(359): warning C4018: '<': signed/unsigned mismatch
+  IsJusGame.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
+  IsJusGame.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)

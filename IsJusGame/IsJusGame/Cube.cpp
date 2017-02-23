@@ -147,13 +147,16 @@ const GLuint Cube::indices[] =
 	22, 23, 20
 };
 
-Cube::Cube()
+Cube::Cube(const glm::mat4& camera)
+	: view(camera)
 {
 
 }
 
-Cube::Cube(bool player) :
+Cube::Cube(const glm::mat4& camera, bool player, int offsetZ) :
 	m_isPlayer(player)
+	, view(camera)
+	, m_offsetZ(offsetZ)
 {
 	srand(time(NULL));
 	
@@ -212,12 +215,6 @@ void Cube::initialize()
 		5.0f,					// Display Range Min : 0.1f unit
 		100.0f					// Display Range Max : 100.0f unit
 	);
-	
-	view = glm::lookAt(
-		glm::vec3(0.0f, 4.0f, 10.0f),	// Camera (x,y,z), in World Space
-		glm::vec3(0.0f, 0.0f, 0.0f),	// Camera looking at origin
-		glm::vec3(0.0f, 1.0f, 0.0f)	// 0.0f, 1.0f, 0.0f Look Down and 0.0f, -1.0f, 0.0f Look Up
-	);
 
 	model = glm::mat4(
 		1.0f					// Identity Matrix
@@ -225,22 +222,45 @@ void Cube::initialize()
 
 	if (!m_isPlayer)
 	{
+		int randomX;
+		int randomY;
 
-		float random;
+		randomX = rand() % 20 - 10;
+		randomY = rand() % 20 - 10;
 
-		random = rand() % 20 - 10;
-
-		std::cout << random << std::endl;
-		model = glm::translate(model, glm::vec3(random, 0, -10));
-
-
+		std::cout << randomY << std::endl;
+		std::cout << randomX << std::endl;
+		model = glm::translate(model, glm::vec3(randomX, randomY, m_offsetZ));
 	}
 }
 
 
-void Cube::update()
+void Cube::update( double dt)
 {
 	mvp = projection * view * model;
+	if (!m_isPlayer)
+	{
+		model = glm::translate(model, glm::vec3(0, 0, 0.03));
+	}
+}
+
+void Cube::setRandomPos()
+{
+	if (!m_isPlayer)
+	{
+
+		int randomX;
+		int randomY;
+
+		randomX = rand() % 20 - 10;
+		randomY = rand() % 20 - 10;
+
+		std::cout << randomY << std::endl;
+		std::cout << randomX << std::endl;
+		model = glm::translate(model, glm::vec3(randomX, randomY, m_offsetZ));
+
+
+	}
 }
 
 

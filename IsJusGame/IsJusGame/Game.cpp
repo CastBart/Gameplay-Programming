@@ -1,6 +1,6 @@
 #include <Game.h>
 
-
+static double const MS_PER_UPDATE = 10.0;
 
 //const string filename = "coordinates.tga";
 //const string filename = "cube.tga";
@@ -18,11 +18,12 @@ int comp_count;		// Component of texture
 
 unsigned char* img_data;		// image data
 
-	// Model View Projection
 
 Game::Game() : 
 	window(sf::VideoMode(800, 600), 
 	"Introduction to OpenGL Texturing")
+	, cameraView(1.0f)
+	, m_player(cameraView, true)
 {
 }
 
@@ -31,6 +32,8 @@ Game::Game(sf::ContextSettings settings) :
 	"Introduction to OpenGL Texturing", 
 	sf::Style::Default, 
 	settings)
+	, cameraView(1.0f)
+	, m_player(cameraView, true)
 {
 }
 
@@ -43,10 +46,11 @@ Game::~Game()
 
 void Game::run()
 {
-	m_cubes.push_back(Cube(false));
+	createCubes();
 	initialize();
 	
-	
+	sf::Clock clock;
+	sf::Int32 lag = 0;
 
 	
 	sf::Event event;
@@ -56,6 +60,7 @@ void Game::run()
 #if (DEBUG >= 2)
 		DEBUG_MSG("Game running...");
 #endif
+		lag += m_elapsed.asMilliseconds();
 
 		while (window.pollEvent(event))
 		{
@@ -64,42 +69,16 @@ void Game::run()
 				isRunning = false;
 			}
 
-			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				// Set Model Rotation
-				//model = rotate(model, 0.01f, glm::vec3(0, 1, 0)); // Rotate
-				 
-				 m_player.view = glm::translate(m_player.view, glm::vec3(0.3, 0, 0));
-				 m_player.model = glm::translate(m_player.model, glm::vec3(-0.3, 0, 0));
-				
-			//	m_cube.translatePoints(-10, Matrix3::Axis::X);
-				
-			}
-
-			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				// Set Model Rotation
-				//model = rotate(model, -0.01f, glm::vec3(0, 1, 0)); // Rotate
-				 m_player.view = glm::translate(m_player.view, glm::vec3(-0.3, 0, 0));
-				 m_player.model = glm::translate(m_player.model, glm::vec3(0.3, 0, 0));
-			}
-
-			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				// Set Model Rotation
-				//model = rotate(model, -0.01f, glm::vec3(1, 0, 0)); // Rotate
-				 m_player.model = glm::translate(m_player.model, glm::vec3(0, 0.3, 0));
-			}
-
-			 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				// Set Model Rotation
-				//model = rotate(model, 0.01f, glm::vec3(1, 0, 0)); // Rotate
-				 m_player.model = glm::translate(m_player.model, glm::vec3(0, -0.3, 0));
-			}
+			
 		}
-		update();
+		while (lag > MS_PER_UPDATE) //update loop
+		{
+			update(MS_PER_UPDATE);
+			lag -= MS_PER_UPDATE;
+		}
+		update(MS_PER_UPDATE);
 		render();
+		
 	}
 
 #if (DEBUG >= 2)
@@ -114,6 +93,13 @@ void Game::initialize()
 	isRunning = true;
 	GLint isCompiled = 0;
 	GLint isLinked = 0;
+
+	cameraView = glm::lookAt(
+		glm::vec3(0.0f, 4.0f, 10.0f),	// Camera (x,y,z), in World Space
+		glm::vec3(0.0f, 0.0f, 0.0f),	// Camera looking at origin
+		glm::vec3(0.0f, 1.0f, 0.0f)	// 0.0f, 1.0f, 0.0f Look Down and 0.0f, -1.0f, 0.0f Look Up
+	);
+
 
 
 	DEBUG_MSG(glGetString(GL_VENDOR));
@@ -295,17 +281,9 @@ void Game::initialize()
 	m_ids.textureID = glGetUniformLocation(m_ids.progID, "f_texture");
 	m_ids.mvpID = glGetUniformLocation(m_ids.progID, "sv_mvp");
 
-	// Projection Matrix 
-	
-
-	
-
 	m_player.initialize();
 
-	for (int i = 0; i < m_cubes.size(); i++)
-	{
-		m_cubes[i].initialize();
-	}
+	
 
 	
 	// Enable Depth Test
@@ -314,20 +292,58 @@ void Game::initialize()
 	glEnable(GL_CULL_FACE);
 }
 
-void Game::update()
+void Game::update(double dt)
 {
 
 
 #if (DEBUG >= 2)
 	DEBUG_MSG("Updating...");
 #endif
-	// Update Model View Projection
+	
+	
+	nextWave += dt;
+	
+	if (nextWave >= 2500)
+	{
+		createCubes();
+		nextWave = 0;
+	}
 
-	m_player.update();
+
+	m_player.update(dt);
+
+
 	for (int i = 0; i < m_cubes.size(); i++)
 	{
-		m_cubes[0].update();
+		m_cubes[i].update(dt);
 	}
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		cameraView = glm::translate(cameraView, glm::vec3(0.01, 0, 0));
+		m_player.model = glm::translate(m_player.model, glm::vec3(-0.01, 0, 0));
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		cameraView = glm::translate(cameraView, glm::vec3(-0.01, 0, 0));
+		m_player.model = glm::translate(m_player.model, glm::vec3(0.01, 0, 0));
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		cameraView = glm::translate(cameraView, glm::vec3(0, -0.01, 0));
+		m_player.model = glm::translate(m_player.model, glm::vec3(0, 0.01, 0));
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		cameraView = glm::translate(cameraView, glm::vec3(0, 0.01, 0));
+		m_player.model = glm::translate(m_player.model, glm::vec3(0, -0.01, 0));
+	}
+
+
 }
 
 void Game::render()
@@ -357,5 +373,21 @@ void Game::unload()
 	glDeleteBuffers(1, &m_ids.vbo);	//Delete Vertex Buffer
 	glDeleteBuffers(1, &m_ids.vib);	//Delete Vertex Index Buffer
 	stbi_image_free(img_data);		//Free image
+}
+
+void Game::createCubes()
+{
+	for (int i = 0; i < 10; i++)
+	{
+		m_cubes.push_back(Cube(cameraView, false, (-10) + (2*-i)));
+		//m_cubes[i].initialize();
+		
+	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		m_cubes[(m_cubes.size() -1) - i].initialize();
+		//m_cubes[i].setRandomPos();
+	}
 }
 

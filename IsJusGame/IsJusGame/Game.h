@@ -7,6 +7,7 @@
 
 
 #include <glm/glm.hpp>
+
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -34,15 +35,22 @@ public:
 	sf::Window window;
 	bool isRunning = false;
 	void initialize();
-	void update();
+	void update(double);
 	void render();
 	void unload();
+	void createCubes();
 private:
 	
-
-	Cube m_player = Cube(true);
+	glm::mat4 cameraView;
+	Cube m_player;
 	std::vector<Cube> m_cubes;
 	ProgramIds m_ids;
+
+	sf::Time m_elapsed;
+	float nextWave = 0;
+
+
+
 };
 
 #endif
