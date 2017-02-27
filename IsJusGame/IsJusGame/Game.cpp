@@ -1,6 +1,6 @@
 #include <Game.h>
 
-static double const MS_PER_UPDATE = 10.0;
+//static double const MS_PER_UPDATE = 10.0;
 
 //const string filename = "coordinates.tga";
 //const string filename = "cube.tga";
@@ -60,7 +60,7 @@ void Game::run()
 #if (DEBUG >= 2)
 		DEBUG_MSG("Game running...");
 #endif
-		lag += m_elapsed.asMilliseconds();
+		m_elapsed += clock.restart();
 
 		while (window.pollEvent(event))
 		{
@@ -71,12 +71,13 @@ void Game::run()
 
 			
 		}
-		while (lag > MS_PER_UPDATE) //update loop
+		while (m_elapsed > MS_PER_UPDATE) //update loop
 		{
-			update(MS_PER_UPDATE);
-			lag -= MS_PER_UPDATE;
+			m_elapsed -= MS_PER_UPDATE;
+			update(MS_PER_UPDATE.asSeconds());
+		
 		}
-		update(MS_PER_UPDATE);
+		
 		render();
 		
 	}
@@ -113,28 +114,9 @@ void Game::initialize()
 
 	/* Vertex Shader */
 #pragma region 
-	const char* vs_src =
-		"#version 400\n\r"
-		""
-		//"layout(location = 0) in vec3 sv_position; //Use for individual Buffers"
-		//"layout(location = 1) in vec4 sv_color; //Use for individual Buffers"
-		//"layout(location = 2) in vec2 sv_texel; //Use for individual Buffers"
-		""
-		"in vec3 sv_position;"
-		"in vec4 sv_color;"
-		"in vec2 sv_uv;"
-		""
-		"out vec4 color;"
-		"out vec2 uv;"
-		""
-		"uniform mat4 sv_mvp;"
-		""
-		"void main() {"
-		"	color = sv_color;"
-		"	uv = sv_uv;"
-		//"	gl_Position = vec4(sv_position, 1);"
-		"	gl_Position = sv_mvp * vec4(sv_position, 1);"
-		"}"; //Vertex Shader Src
+	std::string temp = loadShader("Shader.vs.txt");
+	const char* vs_src = temp.c_str();
+	
 
 	DEBUG_MSG("Setting Up Vertex Shader");
 
@@ -157,26 +139,9 @@ void Game::initialize()
 #pragma endregion 
 	/* Fragment Shader*/
 #pragma region
-	const char* fs_src =
-		"#version 400\n\r"
-		""
-		"uniform sampler2D f_texture;"
-		""
-		"in vec4 color;"
-		"in vec2 uv;"
-		""
-		"out vec4 fColor;"
-		""
-		"void main() {"
-		//"	vec4 lightColor = vec4(1.0f, 0.0f, 0.0f, 1.0f); "
-		//"	fColor = vec4(0.50f, 0.50f, 0.50f, 1.0f);"
-		"	fColor = texture2D(f_texture, uv);"
-		//"	fColor = color * texture2D(f_texture, uv);"
-		//"	fColor = lightColor * texture2D(f_texture, uv);"
-		//"	fColor = color + texture2D(f_texture, uv);"
-		//"	fColor = color - texture2D(f_texture, uv);"
-		//"	fColor = color;"
-		"}"; //Fragment Shader Src
+	std::string temp1 = loadShader("Shader.fv.txt");
+	const char* fs_src = temp1.c_str();
+
 
 	DEBUG_MSG("Setting Up Fragment Shader");
 
@@ -281,7 +246,7 @@ void Game::initialize()
 	m_ids.textureID = glGetUniformLocation(m_ids.progID, "f_texture");
 	m_ids.mvpID = glGetUniformLocation(m_ids.progID, "sv_mvp");
 
-	m_player.initialize();
+	m_player.initialize(m_player.m_frontTopLeftPos);
 
 	
 
@@ -295,55 +260,65 @@ void Game::initialize()
 void Game::update(double dt)
 {
 
-
 #if (DEBUG >= 2)
 	DEBUG_MSG("Updating...");
 #endif
 	
+	switch (currentState)
+	{
+	case GameState::Playing:
+		//if last element's z component of vector is greater than spawn distance then create new batch of cubes
+		if (m_cubes.back()->m_backTopLeftPos.z > SPAWN_DISTANCE_FROM_CENTRE)
+		{
+			createCubes();
+		}
+
+
+		m_player.update(dt);
+
+
+		for (int i = 0; i < m_cubes.size(); i++)
+		{
+			m_cubes[i]->update(dt);
+		}
+
+		//move left
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			cameraView = glm::translate(cameraView, glm::vec3(15 * dt, 0, 0));
+			m_player.model = glm::translate(m_player.model, glm::vec3(-15 * dt, 0, 0));
+			m_player.m_frontTopLeftPos.x -= 15 * dt;
+		}
+		//move right
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			cameraView = glm::translate(cameraView, glm::vec3(-15 * dt, 0, 0));
+			m_player.model = glm::translate(m_player.model, glm::vec3(15 * dt, 0, 0));
+			m_player.m_frontTopLeftPos.x += 15 * dt;
+		}
+		//move up
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			cameraView = glm::translate(cameraView, glm::vec3(0, -15 * dt, 0));
+			m_player.model = glm::translate(m_player.model, glm::vec3(0, 15 * dt, 0));
+			m_player.m_frontTopLeftPos.y += 15 * dt;
+		}
+		//move down
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			cameraView = glm::translate(cameraView, glm::vec3(0, 15 * dt, 0));
+			m_player.model = glm::translate(m_player.model, glm::vec3(0, -15 * dt, 0));
+			m_player.m_frontTopLeftPos.y -= 15 * dt;
+		}
+		checkCollision();
+		deleteCubes();
+		break;
+	case GameState::Gameover:
+		break;
+	default:
+		break;
+	}
 	
-	nextWave += dt;
-	
-	if (nextWave >= 2500)
-	{
-		createCubes();
-		nextWave = 0;
-	}
-
-
-	m_player.update(dt);
-
-
-	for (int i = 0; i < m_cubes.size(); i++)
-	{
-		m_cubes[i].update(dt);
-	}
-
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	{
-		cameraView = glm::translate(cameraView, glm::vec3(0.01, 0, 0));
-		m_player.model = glm::translate(m_player.model, glm::vec3(-0.01, 0, 0));
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	{
-		cameraView = glm::translate(cameraView, glm::vec3(-0.01, 0, 0));
-		m_player.model = glm::translate(m_player.model, glm::vec3(0.01, 0, 0));
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		cameraView = glm::translate(cameraView, glm::vec3(0, -0.01, 0));
-		m_player.model = glm::translate(m_player.model, glm::vec3(0, 0.01, 0));
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-	{
-		cameraView = glm::translate(cameraView, glm::vec3(0, 0.01, 0));
-		m_player.model = glm::translate(m_player.model, glm::vec3(0, -0.01, 0));
-	}
-
-
 }
 
 void Game::render()
@@ -358,7 +333,7 @@ void Game::render()
 	m_player.render(m_ids, m_player.mvp);
 	for (int i = 0; i < m_cubes.size(); i++)
 	{
-		m_cubes[i].render(m_ids, m_cubes[i].mvp);
+		m_cubes[i]->render(m_ids, m_cubes[i]->mvp);
 	}
 
 	window.display();
@@ -375,19 +350,97 @@ void Game::unload()
 	stbi_image_free(img_data);		//Free image
 }
 
+/// <summary>
+/// create new batch of cubes
+/// </summary>
 void Game::createCubes()
 {
-	for (int i = 0; i < 10; i++)
+	
+	for (int i = 0; i < 15; i++)
 	{
-		m_cubes.push_back(Cube(cameraView, false, (-10) + (2*-i)));
-		//m_cubes[i].initialize();
+		m_cubes.push_back(std::unique_ptr<Cube>(new Cube(cameraView, false, (SPAWN_DISTANCE_FROM_CENTRE) + (GAP_BETWEEN_CUBES *-i))));
 		
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		m_cubes[(m_cubes.size() -1) - i].initialize();
-		//m_cubes[i].setRandomPos();
+		m_cubes[(m_cubes.size() -1) - i]->initialize(m_player.m_frontTopLeftPos);
+		
 	}
+}
+
+/// <summary>
+/// delete cubes that are behind the camera
+/// </summary>
+void Game::deleteCubes()
+{
+	if (m_cubes[0]->m_backTopLeftPos.z > 10)
+	{
+		m_cubes.erase(m_cubes.begin());
+	}
+}
+
+/// <summary>
+/// load shader from a file 
+/// </summary>
+/// <param name="fileName"></param>
+/// <returns></returns>
+std::string Game::loadShader(const std::string & fileName)
+{
+	std::ifstream file;
+	file.open((fileName).c_str());
+
+	std::string output;
+	std::string line;
+
+
+	while (!file.eof())
+	{
+		getline(file, line);
+		output.append(line + "\n");
+	}
+
+
+	return output;
+
+}
+
+
+/// <summary>
+/// check collisions betweeen cubes and player
+/// </summary>
+void Game::checkCollision()
+{
+	
+
+	for (auto &cube : m_cubes)
+	{
+		if ( //checks for intersection on x axis
+			cube->m_frontTopLeftPos.x < m_player.m_frontTopLeftPos.x &&//x pos
+			cube->m_frontTopRightPos.x > m_player.m_frontTopLeftPos.x 
+			||
+			cube->m_frontTopLeftPos.x < m_player.m_frontTopLeftPos.x + 2 &&
+			cube->m_frontTopRightPos.x > m_player.m_frontTopLeftPos.x + 2
+
+			)
+		{
+			if (//checks for intersection on y axis
+				cube->m_frontTopLeftPos.y > m_player.m_frontTopLeftPos.y &&//y pos
+				cube->m_frontBotLeftPos.y < m_player.m_frontTopLeftPos.y
+				||
+				cube->m_frontTopLeftPos.y > m_player.m_frontTopLeftPos.y - 2 &&
+				cube->m_frontBotLeftPos.y < m_player.m_frontTopLeftPos.y - 2
+				)
+			{//checks if the cube is greater than -1 for less compulation 
+				if (cube->m_frontTopLeftPos.z > -1)
+				{
+					currentState = GameState::Gameover;
+				}
+				
+			}
+			
+		}
+	}
+
 }
 

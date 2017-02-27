@@ -147,6 +147,8 @@ const GLuint Cube::indices[] =
 	22, 23, 20
 };
 
+float Cube::m_zMovement = 60;
+
 Cube::Cube(const glm::mat4& camera)
 	: view(camera)
 {
@@ -157,6 +159,7 @@ Cube::Cube(const glm::mat4& camera, bool player, int offsetZ) :
 	m_isPlayer(player)
 	, view(camera)
 	, m_offsetZ(offsetZ)
+
 {
 	srand(time(NULL));
 	
@@ -207,7 +210,7 @@ void Cube::render(ProgramIds & ids, glm::mat4& mvp)
 
 }
 
-void Cube::initialize()
+void Cube::initialize(const sf::Vector3f playerPos)
 {
 	projection = glm::perspective(
 		45.0f,					// Field of View 45 degrees
@@ -222,16 +225,42 @@ void Cube::initialize()
 
 	if (!m_isPlayer)
 	{
-		int randomX;
-		int randomY;
+		float randomX;
+		float randomY;
 
 		randomX = rand() % 20 - 10;
 		randomY = rand() % 20 - 10;
+		randomX += playerPos.x;
+		randomY += playerPos.y;
 
-		std::cout << randomY << std::endl;
-		std::cout << randomX << std::endl;
+		//std::cout << randomY << std::endl;
+		//std::cout << randomX << std::endl;
+		//initialize front face
+		m_frontTopLeftPos = sf::Vector3f(randomX - 1.0f, randomY + 1.0f, m_offsetZ + 1.0f);
+		m_frontTopRightPos = sf::Vector3f(randomX + 1.0f, randomY + 1.0f, m_offsetZ + 1.0f);
+		m_frontBotLeftPos = sf::Vector3f(randomX - 1.0f, randomY - 1.0f, m_offsetZ + 1.0f);
+		m_frontBotRightPos = sf::Vector3f(randomX + 1.0f, randomY - 1.0f, m_offsetZ + 1.0f);
+		//initialize back face
+		m_backTopLeftPos = sf::Vector3f(randomX - 1.0f, randomY + 1.0f, m_offsetZ - 1.0f);
+		m_backTopRightPos = sf::Vector3f(randomX + 1.0f, randomY + 1.0f, m_offsetZ - 1.0f);
+		m_backBotLeftPos = sf::Vector3f(randomX - 1.0f, randomY - 1.0f, m_offsetZ - 1.0f);
+		m_backBotRightPos = sf::Vector3f(randomX + 1.0f, randomY - 1.0f, m_offsetZ - 1.0f);
+
 		model = glm::translate(model, glm::vec3(randomX, randomY, m_offsetZ));
 	}
+	else
+	{
+		m_frontTopLeftPos = sf::Vector3f(-1.0f, 1.0f, 1.0f);
+		m_frontTopRightPos = sf::Vector3f(1.0f, 1.0f, 1.0f);
+		m_frontBotLeftPos = sf::Vector3f(-1.0f, -1.0f, 1.0f);
+		m_frontBotRightPos = sf::Vector3f(1.0f, -1.0f, 1.0f);
+		//initialize back face
+		m_backTopLeftPos = sf::Vector3f(-1.0f, 1.0f, -1.0f);
+		m_backTopRightPos = sf::Vector3f(1.0f, 1.0f, -1.0f);
+		m_backBotLeftPos = sf::Vector3f(-1.0f, -1.0f, -1.0f);
+		m_backBotRightPos = sf::Vector3f(1.0f, -1.0f, -1.0f);
+	}
+	
 }
 
 
@@ -240,28 +269,29 @@ void Cube::update( double dt)
 	mvp = projection * view * model;
 	if (!m_isPlayer)
 	{
-		model = glm::translate(model, glm::vec3(0, 0, 0.03));
+		model = glm::translate(model, glm::vec3(0, 0, m_zMovement * dt ));
+		//updating z position of cubes.
+		m_frontTopLeftPos.z += m_zMovement * dt;
+		m_frontTopRightPos.z += m_zMovement * dt;
+		m_frontBotLeftPos.z += m_zMovement * dt;
+		m_frontBotRightPos.z += m_zMovement * dt;
+		
+		m_backTopLeftPos.z += m_zMovement * dt;
+		m_backTopRightPos.z += m_zMovement * dt;
+		m_backBotLeftPos.z += m_zMovement * dt;
+		m_backBotRightPos.z += m_zMovement * dt;
 	}
-}
 
-void Cube::setRandomPos()
-{
-	if (!m_isPlayer)
+	m_increaseSpeedTimer += dt;
+	if (m_increaseSpeedTimer > 2)
 	{
-
-		int randomX;
-		int randomY;
-
-		randomX = rand() % 20 - 10;
-		randomY = rand() % 20 - 10;
-
-		std::cout << randomY << std::endl;
-		std::cout << randomX << std::endl;
-		model = glm::translate(model, glm::vec3(randomX, randomY, m_offsetZ));
-
-
+		m_zMovement +=0.1;
+		m_increaseSpeedTimer = 0;
 	}
 }
+
+
+
 
 
 

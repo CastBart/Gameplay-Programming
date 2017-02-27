@@ -62,9 +62,8 @@ public:
 	~Cube();
 	void render(ProgramIds& ids, glm::mat4& mpv);
 	//void unload();
-	void initialize();
+	void initialize(const sf::Vector3f playerPos);
 	void update(double dt);
-	void setRandomPos();
 
 	static const GLuint indices[];
 	static GLfloat vertices[];
@@ -82,8 +81,23 @@ public:
 	const glm::mat4& view;
 	glm::mat4 model, projection, mvp;
 	bool m_isPlayer;
-	int m_offsetZ;
+	bool m_isBullet;
+	float m_offsetZ;
+	static float m_zMovement;
+	float m_increaseSpeedTimer = 0;
 	
+	
+
+	sf::Vector3f m_frontTopLeftPos;
+	sf::Vector3f m_frontTopRightPos;
+	sf::Vector3f m_frontBotLeftPos;
+	sf::Vector3f m_frontBotRightPos;
+
+
+	sf::Vector3f m_backTopLeftPos;
+	sf::Vector3f m_backTopRightPos;
+	sf::Vector3f m_backBotLeftPos;
+	sf::Vector3f m_backBotRightPos;
 };
 #endif
 

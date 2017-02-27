@@ -1,7 +1,9 @@
 ﻿  Game.cpp
-c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(77): warning C4244: '-=': conversion from 'const double' to 'sf::Int32', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(304): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(316): warning C4018: '<': signed/unsigned mismatch
-c:\users\c00205464\downloads\gameplay-programming\isjusgame\isjusgame\game.cpp(359): warning C4018: '<': signed/unsigned mismatch
-  IsJusGame.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
-  IsJusGame.vcxproj -> C:\Users\C00205464\Downloads\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(280): warning C4018: '<': signed/unsigned mismatch
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(290): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(297): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(304): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(311): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\github\gameplay-programming\isjusgame\isjusgame\game.cpp(334): warning C4018: '<': signed/unsigned mismatch
+  IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.exe
+  IsJusGame.vcxproj -> D:\GitHub\Gameplay-Programming\IsJusGame\Debug\IsJusGame.pdb (Partial PDB)

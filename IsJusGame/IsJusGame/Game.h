@@ -21,6 +21,7 @@
 
 #include "ProgramIds.h"
 #include "Cube.h"
+#include <fstream>
 
 
 
@@ -39,17 +40,25 @@ public:
 	void render();
 	void unload();
 	void createCubes();
+	void deleteCubes();
+	void checkCollision();
+	std::string loadShader(const std::string & fileName);
+	enum class GameState { Playing, Gameover};
+	GameState currentState = GameState::Playing;
 private:
 	
 	glm::mat4 cameraView;
 	Cube m_player;
-	std::vector<Cube> m_cubes;
+	std::vector<std::unique_ptr<Cube>> m_cubes;
+	std::vector<std::unique_ptr<Cube>> m_bullets;
 	ProgramIds m_ids;
 
 	sf::Time m_elapsed;
 	float nextWave = 0;
 
-
+	const sf::Time MS_PER_UPDATE = sf::seconds(1 / 60.0f);
+	const int SPAWN_DISTANCE_FROM_CENTRE = -100;
+	const int GAP_BETWEEN_CUBES = 5;
 
 };
 
